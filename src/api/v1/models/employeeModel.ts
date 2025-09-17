@@ -1,5 +1,3 @@
-import { UrlWithStringQuery } from "url";
-
 export interface Employee {
   id: string;
   name: string;

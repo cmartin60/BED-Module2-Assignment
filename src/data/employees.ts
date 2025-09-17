@@ -28,5 +28,4 @@ export const employees: Employee[] = [
     phone: "204-555-0193",
     branchId: 3,
   },
-  // ... continue with the rest of your employees, all `id` values as strings
 ];
