@@ -1,11 +1,15 @@
 import { Employee } from "../models/employeeModel";
 
-let employeeData: Employee[] = [];
+const employees: Employee[] = [];
 
-export const employeeService = {
-    createEmployee: async (employee: Employee): Promise<Employee> => {
-        const newEmployee = { ...employee, id: (employeeData.length + 1).toString() }; // Simulating an auto-generated ID
-        employeeData.push(newEmployee);
-        return newEmployee;
-    },
+/**
+ * @description Create a new employee.
+ * @param {Omit<Employee, 'id'>} employee - The employee data.
+ * @returns {Promise<Employee>}
+ */
+
+export const createEmployee = async (employee: Omit<Employee, "id">): Promise<Employee> => {
+    const newEmployee: Employee = { id: Date.now().toString(), ...employee };
+    employees.push(newEmployee);
+    return newEmployee;
 };

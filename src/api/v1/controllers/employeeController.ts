@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { Employee } from "../models/employeeModel";
-import { employeeService } from "../services/employeeService"; 
+import * as employeeService from "../services/employeeService";
 
 /**
  * @description Create a new employee.
- * @route POST /api/v1/employees
- * @returns {Promise<void>}
+ * @route POST /employees
+ * @returns {Promise<void>} creation of new employee.
  */
 export const createEmployee = async (
     req: Request,
