@@ -31,3 +31,19 @@ export const getAllEmployees = async (): Promise<Employee[]> => {
 export const getEmployeeById = async (id: string): Promise<Employee | null> => {
     return employees.find(emp => emp.id === id) || null;
 };
+
+/**
+ * @description Update an existing employee.
+ * @param {string} id - The ID of the employee to update.
+ * @param {Partial<Employee>} updates - The updated employee data.
+ * @returns {Promise<Employee>}
+ * @throws {Error} If the employee with the given ID is not found.
+ */
+export const updateEmployee = async (id: string, updates: Partial<Employee>): Promise<Employee> => {
+    const index: number = employees.findIndex(emp => emp.id === id);
+    if (index === -1) {
+        throw new Error(`Employee with ID ${id} not found`);
+    }
+    employees[index] = { ...employees[index], ...updates };
+    return employees[index];
+};
