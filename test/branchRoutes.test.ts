@@ -28,9 +28,20 @@ describe("Branch Endpoints", () => {
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });
+    
   it("should get a branch by ID", async () => {
         const response = await request(app).get(`/api/v1/branches/${branchId}`);
         expect(response.status).toBe(200);
         expect(response.body.data.id).toBe(branchId);
     });
+
+  it("should update a branch", async () => {
+        const response = await request(app)
+            .put(`/api/v1/branches/${branchId}`)
+            .send({ address: "456 Elm St, New City, Country" });
+
+        expect(response.status).toBe(200);
+        expect(response.body.data.address).toBe("456 Elm St, New City, Country");
+    });    
 });
+
