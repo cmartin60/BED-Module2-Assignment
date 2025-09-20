@@ -20,3 +20,18 @@ export const createBranch = async (branch: Omit<Branch, "id">): Promise<Branch> 
 export const getAllBranches = async (): Promise<Branch[]> => {
     return branches;
 };
+
+/**
+ * @description Get a branch by ID.
+ * @param {string} id - The ID of the branch to retrieve.
+ * @returns {Promise<Branch | null>}
+ */
+export const getBranchById = async (id: string): Promise<Branch> => {
+  const branch = branches.find(b => b.id === id);
+  if (!branch) {
+    const error: any = new Error(`Branch with ID ${id} not found`);
+    error.statusCode = 404;
+    throw error;
+  }
+  return branch;
+};

@@ -1,5 +1,5 @@
 import express from "express";
-import { createBranch, getAllBranches, } from "../controllers/branchController";
+import { createBranch, getAllBranches, getBranchById, } from "../controllers/branchController";
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ const router = express.Router();
  */
 router.post("/", createBranch);
 router.get("/", getAllBranches);
+router.get("/:id", getBranchById);
 
 export default router;
