@@ -28,7 +28,7 @@ describe("Branch Endpoints", () => {
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });
-    
+
   it("should get a branch by ID", async () => {
         const response = await request(app).get(`/api/v1/branches/${branchId}`);
         expect(response.status).toBe(200);
@@ -42,6 +42,12 @@ describe("Branch Endpoints", () => {
 
         expect(response.status).toBe(200);
         expect(response.body.data.address).toBe("456 Elm St, New City, Country");
-    });    
+    });
+
+  it("should delete a branch", async () => {
+        const response = await request(app).delete(`/api/v1/branches/${branchId}`);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Branch Deleted");
+    });
 });
 
