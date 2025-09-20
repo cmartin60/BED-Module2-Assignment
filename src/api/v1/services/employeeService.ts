@@ -21,3 +21,13 @@ export const createEmployee = async (employee: Omit<Employee, "id">): Promise<Em
 export const getAllEmployees = async (): Promise<Employee[]> => {
     return employees;
 };
+
+/**
+ * @description Get an employee by ID.
+ * @param {string} id - The ID of the employee to retrieve.
+ * @returns {Promise<Employee>}
+ * @throws {Error} If the employee with the given ID is not found.
+ */
+export const getEmployeeById = async (id: string): Promise<Employee | null> => {
+    return employees.find(emp => emp.id === id) || null;
+};

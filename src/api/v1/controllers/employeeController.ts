@@ -37,3 +37,26 @@ export const getAllEmployees = async (
         next(error);
     }
 };
+
+/**
+ * @description Get an employee by ID.
+ * @route GET /employees/:id
+ * @returns {Promise<void>}
+ */
+export const getEmployeeById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const employee = await employeeService.getEmployeeById(req.params.id);
+        
+        if (!employee) {
+            res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.status(200).json({ message: "Employee Retrieved", data: employee });
+    } catch (error) {
+        next(error);
+    }
+};
