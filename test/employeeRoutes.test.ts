@@ -39,4 +39,13 @@ describe("Employee Directory Endpoints", () => {
         expect(response.status).toBe(200);
         expect(response.body.data.id).toBe(employeeId);
     });
+
+    it("should update an employee", async () => {
+        const response = await request(app)
+            .put(`/api/v1/employees/${employeeId}`)
+            .send({ position: "Senior Manager" });
+
+        expect(response.status).toBe(200);
+        expect(response.body.data.position).toBe("Senior Manager");
+    });
 });
