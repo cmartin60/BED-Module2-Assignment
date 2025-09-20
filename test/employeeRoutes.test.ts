@@ -33,4 +33,10 @@ describe("Employee Directory Endpoints", () => {
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });
+
+    it("should get an employee by ID", async () => {
+        const response = await request(app).get(`/api/v1/employees/${employeeId}`);
+        expect(response.status).toBe(200);
+        expect(response.body.data.id).toBe(employeeId);
+    });
 });
