@@ -30,5 +30,13 @@ describe("Employee Directory Endpoints", () => {
       expect(res.body.data).toMatchObject(newEmployee);
       expect(res.body.data).toHaveProperty("id");
     });
+
+    it("should get all employees", async () => {
+        const response = await request(app).get("/api/v1/employees");
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body.data)).toBeTruthy();
+    });
+
   });
+
 });
