@@ -12,3 +12,11 @@ export const createBranch = async (branch: Omit<Branch, "id">): Promise<Branch> 
     branches.push(newBranch);
     return newBranch;
 };
+
+/**
+ * @description Get all branches.
+ * @returns {Promise<Branch[]>}
+ */
+export const getAllBranches = async (): Promise<Branch[]> => {
+    return branches;
+};

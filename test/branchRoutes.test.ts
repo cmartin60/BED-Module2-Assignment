@@ -22,4 +22,10 @@ describe("Branch Endpoints", () => {
     expect(response.body.data.id).toBeDefined();
     branchId = response.body.data.id;
   });
+  
+  it("should get all branches", async () => {
+        const response = await request(app).get("/api/v1/branches");
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body.data)).toBeTruthy();
+    });
 });
