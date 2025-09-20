@@ -34,7 +34,7 @@ describe("Branch Endpoints", () => {
         expect(response.status).toBe(200);
         expect(response.body.data.id).toBe(branchId);
     });
-
+    
   it("should update a branch", async () => {
         const response = await request(app)
             .put(`/api/v1/branches/${branchId}`)

@@ -51,3 +51,17 @@ export const updateBranch = async (id: string, updates: Partial<Branch>): Promis
     branches[index] = { ...branches[index], ...updates };
     return branches[index];
 };
+
+/**
+ * @description Delete a branch.
+ * @param {string} id - The ID of the branch to delete.
+ * @returns {Promise<void>}
+ * @throws {Error} If the branch with the given ID is not found.
+ */
+export const deleteBranch = async (id: string): Promise<void> => {
+    const index: number = branches.findIndex(branch => branch.id === id);
+    if (index === -1) {
+        throw new Error(`Branch with ID ${id} not found`);
+    }
+    branches.splice(index, 1);
+};
