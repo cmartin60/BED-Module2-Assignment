@@ -48,4 +48,10 @@ describe("Employee Directory Endpoints", () => {
         expect(response.status).toBe(200);
         expect(response.body.data.position).toBe("Senior Manager");
     });
+
+        it("should delete an employee", async () => {
+        const response = await request(app).delete(`/api/v1/employees/${employeeId}`);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Employee Deleted");
+    });
 });
