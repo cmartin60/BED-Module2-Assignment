@@ -60,3 +60,24 @@ export const getBranchById = async (
         next(error);
     }
 };
+
+/**
+ * @description Update an existing branch.
+ * @route PUT /branches/:id
+ * @returns {Promise<void>}
+ */
+export const updateBranch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const updatedBranch: Branch = await branchService.updateBranch(
+            req.params.id,
+            req.body
+        );
+        res.status(200).json({ message: "Branch Updated", data: updatedBranch });
+    } catch (error) {
+        next(error);
+    }
+};

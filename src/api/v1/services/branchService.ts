@@ -35,3 +35,19 @@ export const getBranchById = async (id: string): Promise<Branch> => {
   }
   return branch;
 };
+
+/**
+ * @description Update an existing branch.
+ * @param {string} id - The ID of the branch to update.
+ * @param {Partial<Branch>} updates - The updated branch data.
+ * @returns {Promise<Branch>}
+ * @throws {Error} If the branch with the given ID is not found.
+ */
+export const updateBranch = async (id: string, updates: Partial<Branch>): Promise<Branch> => {
+    const index: number = branches.findIndex(branch => branch.id === id);
+    if (index === -1) {
+        throw new Error(`Branch with ID ${id} not found`);
+    }
+    branches[index] = { ...branches[index], ...updates };
+    return branches[index];
+};
