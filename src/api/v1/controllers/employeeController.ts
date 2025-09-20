@@ -23,7 +23,7 @@ export const createEmployee = async (
 /**
  * @description Get all employees.
  * @route GET /employees
- * @returns {Promise<void>}
+ * @returns {Promise<void>} send list of all employees.
  */
 export const getAllEmployees = async (
     req: Request,
@@ -41,7 +41,7 @@ export const getAllEmployees = async (
 /**
  * @description Get an employee by ID.
  * @route GET /employees/:id
- * @returns {Promise<void>}
+ * @returns {Promise<void>} send employee data or error if id not found 
  */
 export const getEmployeeById = async (
     req: Request,
@@ -64,7 +64,7 @@ export const getEmployeeById = async (
 /**
  * @description Update an existing employee.
  * @route PUT /employees/:id
- * @returns {Promise<void>}
+ * @returns {Promise<void>} send updated employee
  */
 export const updateEmployee = async (
     req: Request,
@@ -85,7 +85,7 @@ export const updateEmployee = async (
 /**
  * @description Delete an employee.
  * @route DELETE /employees/:id
- * @returns {Promise<void>}
+ * @returns {Promise<void>} deletes and employee 
  */
 export const deleteEmployee = async (
     req: Request,

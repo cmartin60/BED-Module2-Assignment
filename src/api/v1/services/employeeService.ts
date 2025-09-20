@@ -16,7 +16,7 @@ export const createEmployee = async (employee: Omit<Employee, "id">): Promise<Em
 
 /**
  * @description Get all employees.
- * @returns {Promise<Employee[]>} all employee
+ * @returns {Promise<Employee[]>} retrieves all employee
  */
 export const getAllEmployees = async (): Promise<Employee[]> => {
     return employees;
@@ -28,8 +28,12 @@ export const getAllEmployees = async (): Promise<Employee[]> => {
  * @returns {Promise<Employee>}
  * @throws {Error} If the employee with the given ID is not found.
  */
-export const getEmployeeById = async (id: string): Promise<Employee | null> => {
-    return employees.find(emp => emp.id === id) || null;
+export const getEmployeeById = async (id: string): Promise<Employee> => {
+  const employee = employees.find(emp => emp.id === id);
+  if (!employee) {
+    throw new Error(`Employee with ID ${id} not found`);
+  }
+  return employee;
 };
 
 /**
