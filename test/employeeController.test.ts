@@ -102,9 +102,6 @@ describe("getAllEmployees", () => {
     });
   });
 
-  /**
-   * GET EMPLOYEE BY ID
-   */
   describe("getEmployeeById", () => {
     it("should handle successful retrieval", async () => {
       const mockEmployee: Employee = {

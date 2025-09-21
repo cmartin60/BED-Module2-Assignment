@@ -28,6 +28,12 @@ router.get("/:id", getBranchById);
  * @param {string} id - The unique identifier of the branch.
  */
 router.put("/:id", updateBranch);
+
+/**
+ * @route DELETE /api/v1/branches/:id
+ * @description Delete a branch by its unique ID.
+ * @param {string} id - The unique identifier of the branch.
+ */
 router.delete("/:id", deleteBranch);
 
 export default router;
