@@ -3,6 +3,7 @@ import { HTTP_STATUS } from "../src/constants/httpConstants";
 import * as employeeController from "../src/api/v1/controllers/employeeController";
 import * as employeeService from "../src/api/v1/services/employeeService";
 import { Employee } from "../src/api/v1/models/employeeModel";
+import * as logicalController from "../src/api/v1/controllers/logicalController";
 
 jest.mock("../src/api/v1/services/employeeService");
 
@@ -220,6 +221,103 @@ describe("updateEmployee", () => {
       );
 
       expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+});
+describe("Logical Controller", () => {
+  let mockReq: Partial<Request>;
+  let mockRes: Partial<Response>;
+  let mockNext: NextFunction;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockReq = { params: {} };
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    mockNext = jest.fn();
+  });
+
+  describe("getEmployeesByBranch", () => {
+    it("should handle successful retrieval", async () => {
+      const mockEmployees: Employee[] = [
+        { id: "1", name: "Alice", position: "Manager", department: "HR", email: "a@b.com", phone: "123", branchId: 1 },
+        { id: "2", name: "Bob", position: "Engineer", department: "IT", email: "b@b.com", phone: "456", branchId: 2 },
+      ];
+
+      mockReq.params = { branchId: "1" };
+      (employeeService.getAllEmployees as jest.Mock).mockResolvedValue(mockEmployees);
+
+      await logicalController.getEmployeesByBranch(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
+
+      expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: "Employees Retrieved for Branch",
+        data: [mockEmployees[0]],
+      });
+    });
+
+    it("should handle missing branchId parameter", async () => {
+      mockReq.params = {};
+      (employeeService.getAllEmployees as jest.Mock).mockResolvedValue([]);
+
+      await logicalController.getEmployeesByBranch(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
+
+      expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: "Employees Retrieved for Branch",
+        data: [],
+      });
+    });
+  });
+
+  describe("getEmployeesByDepartment", () => {
+    it("should handle successful retrieval", async () => {
+      const mockEmployees: Employee[] = [
+        { id: "1", name: "Alice", position: "Manager", department: "HR", email: "a@b.com", phone: "123", branchId: 1 },
+        { id: "2", name: "Bob", position: "Engineer", department: "IT", email: "b@b.com", phone: "456", branchId: 2 },
+      ];
+
+      mockReq.params = { department: "HR" };
+      (employeeService.getAllEmployees as jest.Mock).mockResolvedValue(mockEmployees);
+
+      await logicalController.getEmployeesByDepartment(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
+
+      expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: "Employees Retrieved for Department",
+        data: [mockEmployees[0]],
+      });
+    });
+
+    it("should handle missing department parameter", async () => {
+      mockReq.params = {};
+      (employeeService.getAllEmployees as jest.Mock).mockResolvedValue([]);
+
+      await logicalController.getEmployeesByDepartment(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
+
+      expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: "Employees Retrieved for Department",
+        data: [],
+      });
     });
   });
 });
