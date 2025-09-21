@@ -21,9 +21,7 @@ describe("Branch Controller", () => {
     mockNext = jest.fn();
   });
 
-  /**
-   * CREATE BRANCH
-   */
+
   describe("createBranch", () => {
     it("should handle successful creation", async () => {
       const mockBody = { name: "Main Branch", address: "123 Main St", phone: "555-1234" };
@@ -59,9 +57,7 @@ describe("Branch Controller", () => {
     });
   });
 
-  /**
-   * GET ALL BRANCHES
-   */
+
   describe("getAllBranches", () => {
     it("should handle successful retrieval", async () => {
       const mockBranches: Branch[] = [
@@ -97,9 +93,7 @@ describe("Branch Controller", () => {
     });
   });
 
-  /**
-   * GET BRANCH BY ID
-   */
+ 
   describe("getBranchById", () => {
     it("should handle successful retrieval", async () => {
       const mockBranch: Branch = {
@@ -140,9 +134,6 @@ describe("Branch Controller", () => {
     });
   });
 
-  /**
-   * UPDATE BRANCH
-   */
   describe("updateBranch", () => {
     it("should handle successful update", async () => {
       const mockBranch: Branch = {
@@ -185,9 +176,6 @@ describe("Branch Controller", () => {
     });
   });
 
-  /**
-   * DELETE BRANCH
-   */
   describe("deleteBranch", () => {
     it("should handle successful deletion", async () => {
       mockReq.params = { id: "1" };
