@@ -15,7 +15,7 @@ export const getEmployeesByBranch = async (
     const { branchId } = req.params;
     const employees: Employee[] = await employeeService.getAllEmployees();
 
-    const branchEmployees = employees.filter(
+    const branchEmployees: Employee[] = employees.filter(
       (emp) => emp.branchId.toString() === branchId
     );
 
@@ -41,7 +41,7 @@ export const getEmployeesByDepartment = async (
     const { department } = req.params;
     const employees: Employee[] = await employeeService.getAllEmployees();
 
-    const departmentEmployees = employees.filter(
+    const departmentEmployees: Employee [] = employees.filter(
       (emp) => emp.department.toLowerCase() === department.toLowerCase()
     );
 

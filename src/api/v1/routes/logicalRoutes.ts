@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Router } from "express";
 import { getEmployeesByBranch, getEmployeesByDepartment } from "../controllers/logicalController";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * @route GET /api/v1/logical/branch/:branchId/employees

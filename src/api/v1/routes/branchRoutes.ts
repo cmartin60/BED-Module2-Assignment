@@ -1,7 +1,13 @@
-import express from "express";
-import { createBranch, getAllBranches, getBranchById, updateBranch, deleteBranch,} from "../controllers/branchController";
+import express, { Router } from "express";
+import {
+  createBranch,
+  getAllBranches,
+  getBranchById,
+  updateBranch,
+  deleteBranch,
+} from "../controllers/branchController";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * @route POST /api/v1/branches

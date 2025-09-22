@@ -49,7 +49,7 @@ export const getEmployeeById = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const employee = await employeeService.getEmployeeById(req.params.id);
+        const employee: Employee = await employeeService.getEmployeeById(req.params.id);
         
         if (!employee) {
             res.status(404).json({ message: "Employee not found" });

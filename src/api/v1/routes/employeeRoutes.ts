@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Router } from "express";
 import { createEmployee, getAllEmployees, getEmployeeById, updateEmployee, deleteEmployee} from "../controllers/employeeController";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * Employee routes

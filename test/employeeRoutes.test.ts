@@ -1,9 +1,9 @@
-import request from "supertest";
-import express from "express";
+import request, { Response as SupertestResponse } from "supertest";
+import express, {Express} from "express";
 import employeeRoutes from "../src/api/v1/routes/employeeRoutes";
 import logicalOperationsRoutes from "../src/api/v1/routes/logicalRoutes"
 
-const app = express();
+const app: Express = express();
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ describe("Employee Directory Endpoints", () => {
      let employeeId: string;
 
     it("should create a new employee", async () => {
-        const response = await request(app)
+        const response: SupertestResponse = await request(app)
             .post("/api/v1/employees")
             .send({
                 name: "John Doe",
@@ -31,7 +31,7 @@ describe("Employee Directory Endpoints", () => {
     });
 
     it("should get all employees", async () => {
-        const response = await request(app).get("/api/v1/employees");
+        const response: SupertestResponse = await request(app).get("/api/v1/employees");
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });
@@ -43,7 +43,7 @@ describe("Employee Directory Endpoints", () => {
     });
 
     it("should update an employee", async () => {
-        const response = await request(app)
+        const response: SupertestResponse = await request(app)
             .put(`/api/v1/employees/${employeeId}`)
             .send({ position: "Senior Manager" });
 
@@ -52,7 +52,7 @@ describe("Employee Directory Endpoints", () => {
     });
 
         it("should delete an employee", async () => {
-        const response = await request(app).delete(`/api/v1/employees/${employeeId}`);
+        const response:SupertestResponse = await request(app).delete(`/api/v1/employees/${employeeId}`);
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Employee Deleted");
     });
@@ -63,13 +63,13 @@ describe("Logical Operations API", () => {
     const department: string = "IT";
 
     it("should get all employees for a specific branch", async () => {
-        const response = await request(app).get(`/api/v1/logical/branches/${branchId}/employees`);
+        const response: SupertestResponse = await request(app).get(`/api/v1/logical/branches/${branchId}/employees`);
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });
 
     it("should get all employees for a specific department", async () => {
-        const response = await request(app).get(`/api/v1/logical/departments/${department}/employees`);
+        const response: SupertestResponse = await request(app).get(`/api/v1/logical/departments/${department}/employees`);
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body.data)).toBeTruthy();
     });

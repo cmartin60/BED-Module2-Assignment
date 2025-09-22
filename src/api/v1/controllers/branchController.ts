@@ -49,7 +49,7 @@ export const getBranchById = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const branch = await branchService.getBranchById(req.params.id);
+        const branch: Branch = await branchService.getBranchById(req.params.id);
         
         if (!branch) {
             res.status(404).json({ message: "Branch not found" });

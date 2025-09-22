@@ -24,7 +24,7 @@ describe("Employee Controller", () => {
 
   describe("createEmployee", () => {
     it("should handle successful creation", async () => {
-      const mockBody = {
+      const mockBody: Omit<Employee, "id"> = {
         name: "John Doe",
         position: "Developer",
         department: "IT",
@@ -55,7 +55,7 @@ describe("Employee Controller", () => {
     });
 
     it("should forward errors to next middleware", async () => {
-      const error = new Error("Service failure");
+      const error: Error = new Error("Service failure");
       (employeeService.createEmployee as jest.Mock).mockRejectedValue(error);
 
       await employeeController.createEmployee(
@@ -90,7 +90,7 @@ describe("getAllEmployees", () => {
     });
 
     it("should call next(error) when service throws", async () => {
-      const error = new Error("Database error");
+      const error: Error = new Error("Database error");
       (employeeService.getAllEmployees as jest.Mock).mockRejectedValue(error);
 
       await employeeController.getAllEmployees(
@@ -180,7 +180,7 @@ describe("updateEmployee", () => {
   it("should call next(error) when service throws", async () => {
     mockReq.params = { id: "1" };
     mockReq.body = {}; // empty update
-    const error = new Error("Update failed");
+    const error:Error = new Error("Update failed");
     (employeeService.updateEmployee as jest.Mock).mockRejectedValue(error);
 
     await employeeController.updateEmployee(

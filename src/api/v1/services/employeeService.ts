@@ -29,9 +29,11 @@ export const getAllEmployees = async (): Promise<Employee[]> => {
  * @throws {Error} If the employee with the given ID is not found.
  */
 export const getEmployeeById = async (id: string): Promise<Employee> => {
-  const employee = employees.find(emp => emp.id === id);
+  const employee: Employee | undefined = employees.find((emp: Employee) => emp.id === id);
   if (!employee) {
-    throw new Error(`Employee with ID ${id} not found`);
+    const error = new Error(`Employee with ID ${id} not found`) as Error & { statusCode: number };
+    error.statusCode = 404;
+    throw error;
   }
   return employee;
 };

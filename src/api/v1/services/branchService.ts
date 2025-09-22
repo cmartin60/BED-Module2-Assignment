@@ -27,9 +27,9 @@ export const getAllBranches = async (): Promise<Branch[]> => {
  * @returns {Promise<Branch | null>}
  */
 export const getBranchById = async (id: string): Promise<Branch> => {
-  const branch = branches.find(b => b.id === id);
+  const branch: Branch | undefined = branches.find(b => b.id === id);
   if (!branch) {
-    const error: any = new Error(`Branch with ID ${id} not found`);
+    const error = new Error(`Branch with ID ${id} not found`) as Error & { statusCode: number };
     error.statusCode = 404;
     throw error;
   }

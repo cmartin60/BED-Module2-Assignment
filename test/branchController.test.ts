@@ -22,9 +22,13 @@ describe("Branch Controller", () => {
   });
 
 
-  describe("createBranch", () => {
+describe("createBranch", () => {
     it("should handle successful creation", async () => {
-      const mockBody = { name: "Main Branch", address: "123 Main St", phone: "555-1234" };
+        const mockBody: Omit<Branch, "id"> = {
+            name: "Main Branch",
+            address: "123 Main St",
+            phone: "555-1234"
+        };
       const mockBranch: Branch = { id: "1", ...mockBody };
 
       mockReq.body = mockBody;
@@ -43,8 +47,8 @@ describe("Branch Controller", () => {
       });
     });
 
-    it("should forward errors to next middleware", async () => {
-      const error = new Error("Service failure");
+    it("should forward errors to next function", async () => {
+      const error: Error = new Error("Service failure");
       (branchService.createBranch as jest.Mock).mockRejectedValue(error);
 
       await branchController.createBranch(
@@ -80,7 +84,7 @@ describe("Branch Controller", () => {
     });
 
     it("should call next(error) when service throws", async () => {
-      const error = new Error("Database error");
+      const error: Error = new Error("Database error");
       (branchService.getAllBranches as jest.Mock).mockRejectedValue(error);
 
       await branchController.getAllBranches(
@@ -120,7 +124,7 @@ describe("Branch Controller", () => {
     });
 
     it("should forward errors when branch not found", async () => {
-      const error = new Error("Branch not found");
+      const error: Error = new Error("Branch not found");
       mockReq.params = { id: "999" };
       (branchService.getBranchById as jest.Mock).mockRejectedValue(error);
 
@@ -161,7 +165,7 @@ describe("Branch Controller", () => {
     });
 
     it("should call next(error) when service throws", async () => {
-      const error = new Error("Update failed");
+      const error: Error = new Error("Update failed");
       mockReq.params = { id: "1" };
       mockReq.body = {};
       (branchService.updateBranch as jest.Mock).mockRejectedValue(error);
