@@ -198,7 +198,7 @@ describe("createBranch", () => {
     });
 
     it("should call next(error) when service throws", async () => {
-      const error = new Error("Branch not found");
+      const error: Error = new Error("Branch not found");
       mockReq.params = { id: "999" };
       (branchService.deleteBranch as jest.Mock).mockRejectedValue(error);
 
