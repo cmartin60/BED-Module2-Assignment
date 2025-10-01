@@ -1,4 +1,4 @@
-import { Branch } from "src/api/v1/models/branchModel";
+import { Branch } from "../api/v1/models/branchModel";
 
 export const branches: Branch[] = [
   {
