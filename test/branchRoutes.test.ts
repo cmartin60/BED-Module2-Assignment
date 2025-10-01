@@ -15,7 +15,7 @@ describe("Branch Endpoints", () => {
       .send({
         name: "Main Branch",
         address: "123 Main St",
-        phone: "555-1234"
+        phone: "555-123-1234"
       });
 
     expect(response.status).toBe(201);
