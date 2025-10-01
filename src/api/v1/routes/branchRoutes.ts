@@ -1,18 +1,22 @@
 import express, { Router } from "express";
-import {
-  createBranch,
-  getAllBranches,
-  getBranchById,
-  updateBranch,
-  deleteBranch,
-} from "../controllers/branchController";
+import * as branchController from "../controllers/branchController";
+import { validateRequest } from "../middleware/validate";
+import { branchSchemas } from "../validation/schemas";
 
 const router: Router = express.Router();
 
-router.post("/", createBranch);
-router.get("/", getAllBranches);
-router.get("/:id", getBranchById);
-router.put("/:id", updateBranch);
-router.delete("/:id", deleteBranch);
+router.post(
+  "/",
+  validateRequest(branchSchemas.create),
+  branchController.createBranch
+);
+router.get("/", branchController.getAllBranches);
+router.get("/:id", branchController.getBranchById);
+router.put(
+  "/:id",
+  validateRequest(branchSchemas.update),
+  branchController.updateBranch
+);
+router.delete("/:id", branchController.deleteBranch);
 
 export default router;
