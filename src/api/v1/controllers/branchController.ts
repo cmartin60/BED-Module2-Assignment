@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import * as branchService from "../services/branchService";
 import { Branch } from "../models/branchModel";
+import * as branchService from "../services/branchService";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { successResponse} from "../models/responseModel";
 
 /**
  * @description Create a new branch.
@@ -13,9 +15,12 @@ export const createBranch = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const newBranch: Branch = await branchService.createBranch(req.body);
-        res.status(201).json({ message: "Branch Created", data: newBranch });
-    } catch (error) {
+        const { name, address, phone } = req.body;
+        const newBranch: Branch = await branchService.createBranch({ name, address, phone });
+        res.status(HTTP_STATUS.CREATED).json(
+            successResponse(newBranch, "Branch Created")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -32,8 +37,10 @@ export const getAllBranches = async (
 ): Promise<void> => {
     try {
         const branches: Branch[] = await branchService.getAllBranches();
-        res.status(200).json({ message: "Branches Retrieved", data: branches });
-    } catch (error) {
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(branches, "Branches Retrieved")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -49,14 +56,18 @@ export const getBranchById = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const branch: Branch = await branchService.getBranchById(req.params.id);
-        
+        const { id } = req.params;
+        const branch: Branch = await branchService.getBranchById(id);
         if (!branch) {
-            res.status(404).json({ message: "Branch not found" });
+            res.status(HTTP_STATUS.NOT_FOUND).json(
+                successResponse(null, "Branch not found")
+            );
+            return;
         }
-
-        res.status(200).json({ message: "Branch Retrieved", data: branch });
-    } catch (error) {
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(branch, "Branch Retrieved")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -72,12 +83,13 @@ export const updateBranch = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const updatedBranch: Branch = await branchService.updateBranch(
-            req.params.id,
-            req.body
+        const { id } = req.params;
+        const { name, address, phone } = req.body;
+        const updatedBranch: Branch = await branchService.updateBranch(id, { name, address, phone });
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(updatedBranch, "Branch Updated")
         );
-        res.status(200).json({ message: "Branch Updated", data: updatedBranch });
-    } catch (error) {
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -93,9 +105,12 @@ export const deleteBranch = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        await branchService.deleteBranch(req.params.id);
-        res.status(200).json({ message: "Branch Deleted" });
-    } catch (error) {
+        const { id } = req.params;
+        await branchService.deleteBranch(id);
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(null, "Branch Deleted")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };

@@ -21,7 +21,6 @@ describe("Branch Controller", () => {
     mockNext = jest.fn();
   });
 
-
 describe("createBranch", () => {
     it("should handle successful creation", async () => {
         const mockBody: Omit<Branch, "id"> = {
@@ -43,6 +42,7 @@ describe("createBranch", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.CREATED);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Branch Created",
+        status: "success",
         data: mockBranch,
       });
     });
@@ -79,6 +79,7 @@ describe("createBranch", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Branches Retrieved",
+        status: "success",
         data: mockBranches,
       });
     });
@@ -119,6 +120,7 @@ describe("createBranch", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Branch Retrieved",
+        status: "success",
         data: mockBranch,
       });
     });
@@ -160,6 +162,7 @@ describe("createBranch", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Branch Updated",
+        status: "success",        
         data: mockBranch,
       });
     });
@@ -194,6 +197,8 @@ describe("createBranch", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Branch Deleted",
+        status: "success",
+        data: null,
       });
     });
 

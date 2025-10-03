@@ -3,22 +3,44 @@ import { Branch } from "../models/branchModel";
 const branches: Branch[] = [];
 
 /**
- * @description Create a new branch.
- * @param {Omit<Branch, 'id'>} branch - The branch data.
- * @returns {Promise<Branch>} new branch created
+ * Retrieves all branches from storage
+ * @returns Array of all branches
  */
-export const createBranch = async (branch: Omit<Branch, "id">): Promise<Branch> => {
-    const newBranch: Branch = { id: Date.now().toString(), ...branch };
+export const getAllBranches = async (): Promise<Branch[]> => {
+    return structuredClone(branches);
+};
+
+/**
+ * Creates a new branch
+ * @param branchData - The data for the new branch (name, address, phone)
+ * @returns The created branch with generated ID
+ */
+export const createBranch = async (branchData: Omit<Branch, "id">): Promise<Branch> => {
+    const newBranch: Branch = {
+        id: Date.now().toString(),
+        ...branchData,
+    };
     branches.push(newBranch);
-    return newBranch;
+    return structuredClone(newBranch);
 };
 
 /**
  * @description Get all branches.
  * @returns {Promise<Branch[]>}
  */
-export const getAllBranches = async (): Promise<Branch[]> => {
-    return branches;
+export const updateBranch = async (
+    id: string,
+    branchData: Partial<Omit<Branch, "id">>
+): Promise<Branch> => {
+    const index: number = branches.findIndex((branch: Branch) => branch.id === id);
+    if (index === -1) {
+        throw new Error(`Branch with ID ${id} not found`);
+    }
+    branches[index] = {
+        ...branches[index],
+        ...branchData,
+    };
+    return structuredClone(branches[index]);
 };
 
 /**
@@ -27,27 +49,11 @@ export const getAllBranches = async (): Promise<Branch[]> => {
  * @returns {Promise<Branch | null>}
  */
 export const getBranchById = async (id: string): Promise<Branch> => {
-    const branch: Branch | undefined = branches.find(branch => branch.id === id);
+    const branch: Branch | undefined = branches.find((branch) => branch.id === id);
     if (!branch) {
-        throw new Error("Branch not found");;
-    }
-    return branch;
-};
-
-/**
- * @description Update an existing branch.
- * @param {string} id - The ID of the branch to update.
- * @param {Partial<Branch>} updates - The updated branch data.
- * @returns {Promise<Branch>}
- * @throws {Error} If the branch with the given ID is not found.
- */
-export const updateBranch = async (id: string, updates: Partial<Branch>): Promise<Branch> => {
-    const index: number = branches.findIndex(branch => branch.id === id);
-    if (index === -1) {
         throw new Error(`Branch with ID ${id} not found`);
     }
-    branches[index] = { ...branches[index], ...updates };
-    return branches[index];
+    return structuredClone(branch);
 };
 
 /**
@@ -57,7 +63,7 @@ export const updateBranch = async (id: string, updates: Partial<Branch>): Promis
  * @throws {Error} If the branch with the given ID is not found.
  */
 export const deleteBranch = async (id: string): Promise<void> => {
-    const index: number = branches.findIndex(branch => branch.id === id);
+    const index: number = branches.findIndex((branch: Branch) => branch.id === id);
     if (index === -1) {
         throw new Error(`Branch with ID ${id} not found`);
     }

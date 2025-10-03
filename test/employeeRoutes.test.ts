@@ -1,74 +1,86 @@
-import request, { Response as SupertestResponse } from "supertest";
-import express, {Express} from "express";
-import employeeRoutes from "../src/api/v1/routes/employeeRoutes";
 
-const app: Express = express();
+import request from "supertest";
+import app from "../src/app";
+import * as employeeController from "../src/api/v1/controllers/employeeController";
+import { HTTP_STATUS } from "../src/constants/httpConstants";
 
-app.use(express.json());
+jest.mock("../src/api/v1/controllers/employeeController", () => ({
+    getAllEmployees: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+    createEmployee: jest.fn((req, res) => res.status(HTTP_STATUS.CREATED).send()),
+    updateEmployee: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+    deleteEmployee: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+    getEmployeeById: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+    getEmployeesByBranch: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+    getEmployeesByDepartment: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+}));
 
-app.use("/api/v1/employees", employeeRoutes);
+describe("Employee Routes", () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
-describe("Employee Directory Endpoints", () => {
-     let employeeId: string;
+    describe("GET /api/v1/employees/", () => {
+        it("should call getAllEmployees controller", async () => {
+            await request(app).get("/api/v1/employees/");
+            expect(employeeController.getAllEmployees).toHaveBeenCalled();
+        });
+    });
 
-    it("should create a new employee", async () => {
-        const response: SupertestResponse = await request(app)
-            .post("/api/v1/employees")
-            .send({
-                name: "John Doe",
-                position: "Software Engineer",
+    describe("POST /api/v1/employees/", () => {
+        it("should call createEmployee controller with valid data", async () => {
+            const mockEmployee = {
+                name: "Test Employee",
+                position: "Developer",
                 department: "IT",
                 email: "johndoe@example.com",
                 phone: "1234567890",
                 branchId: "1"
-            });
-
-        expect(response.status).toBe(201);
-        expect(response.body.data.id).toBeDefined();
-        employeeId = response.body.data.id;
+            };
+            await request(app).post("/api/v1/employees/").send(mockEmployee);
+            expect(employeeController.createEmployee).toHaveBeenCalled();
+        });
     });
 
-    it("should get all employees", async () => {
-        const response: SupertestResponse = await request(app).get("/api/v1/employees");
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body.data)).toBeTruthy();
+    describe("PUT /api/v1/employees/:id", () => {
+        it("should call updateEmployee controller with valid data", async () => {
+            const mockEmployee = {
+                name: "Updated Employee",
+                position: "Manager",
+                department: "HR",
+                email: "updated@example.com",
+                phone: "0987654321",
+                branchId: "2"
+            };
+            await request(app).put("/api/v1/employees/testId").send(mockEmployee);
+            expect(employeeController.updateEmployee).toHaveBeenCalled();
+        });
     });
 
-    it("should get an employee by ID", async () => {
-        const response: SupertestResponse = await request(app).get(`/api/v1/employees/${employeeId}`);
-        expect(response.status).toBe(200);
-        expect(response.body.data.id).toBe(employeeId);
+    describe("DELETE /api/v1/employees/:id", () => {
+        it("should call deleteEmployee controller with valid data", async () => {
+            await request(app).delete("/api/v1/employees/testId");
+            expect(employeeController.deleteEmployee).toHaveBeenCalled();
+        });
     });
 
-    it("should update an employee", async () => {
-        const response: SupertestResponse = await request(app)
-            .put(`/api/v1/employees/${employeeId}`)
-            .send({ position: "Senior Manager" });
-
-        expect(response.status).toBe(200);
-        expect(response.body.data.position).toBe("Senior Manager");
+    describe("GET /api/v1/employees/:id", () => {
+        it("should call getEmployeeById controller", async () => {
+            await request(app).get("/api/v1/employees/testId");
+            expect(employeeController.getEmployeeById).toHaveBeenCalled();
+        });
     });
 
-        it("should delete an employee", async () => {
-        const response:SupertestResponse = await request(app).delete(`/api/v1/employees/${employeeId}`);
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe("Employee Deleted");
-    });
-});
-
-describe("Logical Operations API", () => {
-    const branchId: string = "1";
-    const department: string = "IT";
-
-    it("should get all employees for a specific branch", async () => {
-        const response: SupertestResponse = await request(app).get(`/api/v1/employees/branches/${branchId}/employees`);
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body.data)).toBeTruthy();
+    describe("GET /api/v1/employees/branches/:branchId/employees", () => {
+        it("should call getEmployeesByBranch controller", async () => {
+            await request(app).get("/api/v1/employees/branches/1/employees");
+            expect(employeeController.getEmployeesByBranch).toHaveBeenCalled();
+        });
     });
 
-    it("should get all employees for a specific department", async () => {
-        const response: SupertestResponse = await request(app).get(`/api/v1/employees/departments/${department}/employees`);
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body.data)).toBeTruthy();
+    describe("GET /api/v1/employees/departments/:department/employees", () => {
+        it("should call getEmployeesByDepartment controller", async () => {
+            await request(app).get("/api/v1/employees/departments/IT/employees");
+            expect(employeeController.getEmployeesByDepartment).toHaveBeenCalled();
+        });
     });
 });

@@ -49,6 +49,7 @@ describe("Employee Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.CREATED);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Created",
+        status: "success",
         data: mockEmployee,
       });
     });
@@ -84,6 +85,7 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved",
+        status: "success",
         data: mockEmployees,
       });
     });
@@ -126,6 +128,7 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Retrieved",
+        status: "success",
         data: mockEmployee,
       });
     });
@@ -143,7 +146,8 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.NOT_FOUND);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee not found",
-      });
+        status: "success",
+        data: null,
     });
   });
 
@@ -172,6 +176,7 @@ describe("updateEmployee", () => {
     expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
     expect(mockRes.json).toHaveBeenCalledWith({
       message: "Employee Updated",
+      status: "success",
       data: mockEmployee,
     });
   });
@@ -206,6 +211,8 @@ describe("updateEmployee", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Deleted",
+        status: "success",
+        data: null,
       });
     });
 
@@ -257,6 +264,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Branch",
+        status: "success",
         data: [mockEmployees[0]],
       });
     });
@@ -274,6 +282,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Branch",
+        status: "success",
         data: [],
       });
     });
@@ -298,6 +307,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Department",
+        status: "success",
         data: [mockEmployees[0]],
       });
     });
@@ -315,7 +325,9 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Department",
+        status: "success",
         data: [],
+        });
       });
     });
   });
