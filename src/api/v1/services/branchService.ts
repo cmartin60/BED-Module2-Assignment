@@ -1,13 +1,37 @@
+import {
+    QuerySnapshot,
+    DocumentData,
+    DocumentSnapshot,
+} from "firebase-admin/firestore";
 import { Branch } from "../models/branchModel";
+import {
+    createDocument,
+    getDocuments,
+    getDocumentById,
+    updateDocument,
+    deleteDocument,
+} from "../repositories/firestoreRepository";
 
-const branches: Branch[] = [];
+const COLLECTION: string = "branches";
 
 /**
  * Retrieves all branches from storage
  * @returns Array of all branches
  */
 export const getAllBranches = async (): Promise<Branch[]> => {
-    return structuredClone(branches);
+    try {
+        const snapshot: QuerySnapshot = await getDocuments(COLLECTION);
+        const branches: Branch[] = snapshot.docs.map((doc) => {
+            const data: DocumentData = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+            } as Branch;
+        });
+        return branches;
+    } catch (error: unknown) {
+        throw error;
+    }
 };
 
 /**
@@ -16,31 +40,40 @@ export const getAllBranches = async (): Promise<Branch[]> => {
  * @returns The created branch with generated ID
  */
 export const createBranch = async (branchData: Omit<Branch, "id">): Promise<Branch> => {
-    const newBranch: Branch = {
-        id: Date.now().toString(),
+    const newBranch: Partial<Branch> = {
         ...branchData,
     };
-    branches.push(newBranch);
-    return structuredClone(newBranch);
+    const branchId: string = await createDocument<Branch>(COLLECTION, newBranch);
+    return structuredClone({ id: branchId, ...newBranch } as Branch);
 };
 
 /**
- * @description Get all branches.
- * @returns {Promise<Branch[]>}
+ * Updates (replaces) an existing branch
+ * @param id - The ID of the branch to update
+ * @param branchData - The fields to updates (name, address, phone)
+ * @returns The updated branch
+ * @throws Error if branch with given ID is not found
  */
 export const updateBranch = async (
     id: string,
-    branchData: Partial<Omit<Branch, "id">>
+    branchData: Partial<Branch>
 ): Promise<Branch> => {
-    const index: number = branches.findIndex((branch: Branch) => branch.id === id);
-    if (index === -1) {
+    const branch: Branch = await getBranchById(id);
+    if (!branch) {
         throw new Error(`Branch with ID ${id} not found`);
     }
-    branches[index] = {
-        ...branches[index],
-        ...branchData,
+
+    const updateBranch: Branch = {
+        ...branch,
     };
-    return structuredClone(branches[index]);
+
+    if (branchData.name !== undefined) updateBranch.name = branchData.name;
+    if (branchData.address !== undefined) updateBranch.address = branchData.address;
+    if (branchData.phone !== undefined) updateBranch.phone = branchData.phone;
+
+    await updateDocument<Branch>(COLLECTION, id, updateBranch);
+
+    return structuredClone(updateBranch);
 };
 
 /**
@@ -49,10 +82,18 @@ export const updateBranch = async (
  * @returns {Promise<Branch | null>}
  */
 export const getBranchById = async (id: string): Promise<Branch> => {
-    const branch: Branch | undefined = branches.find((branch) => branch.id === id);
-    if (!branch) {
+    const doc: DocumentSnapshot | null = await getDocumentById(COLLECTION, id);
+
+    if (!doc) {
         throw new Error(`Branch with ID ${id} not found`);
     }
+
+    const data: DocumentData | undefined = doc.data();
+    const branch: Branch = {
+        id: doc.id,
+        ...data,
+    } as Branch;
+
     return structuredClone(branch);
 };
 
@@ -63,9 +104,10 @@ export const getBranchById = async (id: string): Promise<Branch> => {
  * @throws {Error} If the branch with the given ID is not found.
  */
 export const deleteBranch = async (id: string): Promise<void> => {
-    const index: number = branches.findIndex((branch: Branch) => branch.id === id);
-    if (index === -1) {
+    const branch: Branch = await getBranchById(id);
+    if (!branch) {
         throw new Error(`Branch with ID ${id} not found`);
     }
-    branches.splice(index, 1);
+
+    await deleteDocument(COLLECTION, id);
 };
