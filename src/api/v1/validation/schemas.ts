@@ -1,10 +1,13 @@
 
-import Joi from 'joi';
+import Joi, { ObjectSchema }  from 'joi';
 
 /**
  * Employee schema
  */
-export const employeeSchemas = {
+export const employeeSchemas: {
+	create: { body: ObjectSchema };
+	update: { params: ObjectSchema; body: ObjectSchema };
+} = {
 	// POST /api/v1/employees - Create new Employee
 	create: {
 		body: Joi.object({
@@ -69,7 +72,10 @@ export const employeeSchemas = {
 /**
  * Branch schema
  */
-export const branchSchemas = {
+export const branchSchemas: {
+	create: { body: ObjectSchema };
+	update: { params: ObjectSchema; body: ObjectSchema };
+} = {
 	// POST /api/v1/branches - Create new Branch
 	create: {
 		body: Joi.object({

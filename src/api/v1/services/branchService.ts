@@ -19,19 +19,15 @@ const COLLECTION: string = "branches";
  * @returns Array of all branches
  */
 export const getAllBranches = async (): Promise<Branch[]> => {
-    try {
-        const snapshot: QuerySnapshot = await getDocuments(COLLECTION);
-        const branches: Branch[] = snapshot.docs.map((doc) => {
-            const data: DocumentData = doc.data();
-            return {
-                id: doc.id,
-                ...data,
-            } as Branch;
-        });
-        return branches;
-    } catch (error: unknown) {
-        throw error;
-    }
+    const snapshot: QuerySnapshot = await getDocuments(COLLECTION);
+    const branches: Branch[] = snapshot.docs.map((doc) => {
+        const data: DocumentData = doc.data();
+        return {
+            id: doc.id,
+            ...data,
+        } as Branch;
+    });
+    return branches;
 };
 
 /**

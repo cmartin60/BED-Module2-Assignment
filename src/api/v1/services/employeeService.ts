@@ -19,19 +19,15 @@ const COLLECTION: string = "employees";
  * @returns Array of all employees
  */
 export const getAllEmployees = async (): Promise<Employee[]> => {
-    try {
-        const snapshot: QuerySnapshot = await getDocuments(COLLECTION);
-        const employees: Employee[] = snapshot.docs.map((doc) => {
-            const data: DocumentData = doc.data();
-            return {
-                id: doc.id,
-                ...data,
-            } as Employee;
-        });
-        return employees;
-    } catch (error: unknown) {
-        throw error;
-    }
+    const snapshot: QuerySnapshot = await getDocuments(COLLECTION);
+    const employees: Employee[] = snapshot.docs.map((doc) => {
+        const data: DocumentData = doc.data();
+        return {
+            id: doc.id,
+            ...data,
+        } as Employee;
+    });
+    return employees;
 };
 
 /**
