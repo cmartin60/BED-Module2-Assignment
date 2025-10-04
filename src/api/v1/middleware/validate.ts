@@ -47,7 +47,7 @@ export const validateRequest = (
                 requestData: unknown,
                 requestSectionName: string,
                 shouldStripFields: boolean
-            ): any => {
+            ): unknown => {
                 // abortEarly false means continue validation even if something fails validation
                 const { error, value: strippedFields } =
                     validationSchema.validate(requestData, {
@@ -76,7 +76,7 @@ export const validateRequest = (
                     req.body,
                     "Body",
                     options.stripBody ?? STRIP_BODY
-                );
+                ) as Record<string, unknown>;
             }
 
             if (schemas.params) {
@@ -85,7 +85,7 @@ export const validateRequest = (
                     req.params,
                     "Params",
                     options.stripParams ?? STRIP_PARAMS
-                ) as any;
+                ) as Record<string, string>;
             }
 
             if (schemas.query) {
@@ -94,7 +94,7 @@ export const validateRequest = (
                     req.query,
                     "Query",
                     options.stripQuery ?? STRIP_QUERY
-                ) as any;
+                ) as Record<string, string>;
             }
 
             // If there are any validation erros, return them
