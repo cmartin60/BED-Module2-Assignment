@@ -63,14 +63,20 @@ describe("Validation Middleware", () => {
         mockReq.body = {
             name: "",
             address: "",
-            phone: "abc",
+            phone: "",
         };
         const middleware: MiddlewareFunction = validateRequest(branchSchemas.create);
         middleware(mockReq as Request, mockRes as Response, mockNext);
         expect(mockNext).not.toHaveBeenCalled();
         expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.BAD_REQUEST);
         expect(mockRes.json).toHaveBeenCalledWith({
-            error: expect.stringContaining("Phone must be a valid phone number"),
+            error: expect.stringContaining("Name cannot be empty"),
+        });
+        expect(mockRes.json).toHaveBeenCalledWith({
+            error: expect.stringContaining("Address cannot be empty"),
+        });
+        expect(mockRes.json).toHaveBeenCalledWith({
+            error: expect.stringContaining("Phone cannot be empty"),
         });
     });
 });

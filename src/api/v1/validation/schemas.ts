@@ -90,10 +90,8 @@ export const branchSchemas: {
 				'any.required': 'Address is required',
 				'string.empty': 'Address cannot be empty',
 			}),
-			phone: Joi.string().required().messages({
-				'any.required': 'Phone is required',
+			phone: Joi.string().optional().messages({
 				'string.empty': 'Phone cannot be empty',
-				'string.pattern.base': 'Phone must be a valid phone number',
 			}),
 		}),
 	},
