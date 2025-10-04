@@ -105,7 +105,7 @@ export const validateRequest = (
             }
 
             next();
-        } catch (error: unknown) {
+        } catch {
             res.status(HTTP_STATUS.BAD_REQUEST).json({
                 message: "Error occurred during validation",
             });
