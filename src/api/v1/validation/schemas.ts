@@ -16,6 +16,12 @@ export const employeeSchemas = {
 				'any.required': 'Position is required',
 				'string.empty': 'Position cannot be empty',
 			}),
+            department: Joi.string().optional().messages({
+                'string.empty': 'Department cannot be empty',
+            }),
+            phone: Joi.string().optional().messages({
+                'string.empty': 'Phone cannot be empty',
+            }),
 			email: Joi.string().email().required().messages({
 				'any.required': 'Email is required',
 				'string.empty': 'Email cannot be empty',
@@ -37,12 +43,18 @@ export const employeeSchemas = {
 			}),
 		}),
 		body: Joi.object({
+			id: Joi.string().optional().messages({
+                'string.empty': 'Id cannot be empty',
+            }),
 			name: Joi.string().optional().messages({
 				'string.empty': 'Name cannot be empty',
 			}),
 			position: Joi.string().optional().messages({
 				'string.empty': 'Position cannot be empty',
 			}),
+			department: Joi.string().optional().messages({
+                'string.empty': 'Department cannot be empty',
+            }),
 			email: Joi.string().email().optional().messages({
 				'string.empty': 'Email cannot be empty',
 				'string.email': 'Email must be a valid email address',
@@ -61,6 +73,9 @@ export const branchSchemas = {
 	// POST /api/v1/branches - Create new Branch
 	create: {
 		body: Joi.object({
+			id: Joi.string().optional().messages({
+                'string.empty': 'Id cannot be empty',
+            }),
 			name: Joi.string().required().messages({
 				'any.required': 'Name is required',
 				'string.empty': 'Name cannot be empty',
@@ -69,7 +84,7 @@ export const branchSchemas = {
 				'any.required': 'Address is required',
 				'string.empty': 'Address cannot be empty',
 			}),
-			phone: Joi.string().pattern(/^[0-9\-\+]{9,15}$/).required().messages({
+			phone: Joi.string().required().messages({
 				'any.required': 'Phone is required',
 				'string.empty': 'Phone cannot be empty',
 				'string.pattern.base': 'Phone must be a valid phone number',
@@ -86,13 +101,16 @@ export const branchSchemas = {
 			}),
 		}),
 		body: Joi.object({
+			id: Joi.string().optional().messages({
+                'string.empty': 'Id cannot be empty',
+            }),
 			name: Joi.string().optional().messages({
 				'string.empty': 'Name cannot be empty',
 			}),
 			address: Joi.string().optional().messages({
 				'string.empty': 'Address cannot be empty',
 			}),
-			phone: Joi.string().pattern(/^[0-9\-\+]{9,15}$/).optional().messages({
+			phone: Joi.string().optional().messages({
 				'string.empty': 'Phone cannot be empty',
 				'string.pattern.base': 'Phone must be a valid phone number',
 			}),
