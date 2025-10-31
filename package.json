@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/cmartin60/BED-Module2-Assignment#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/jest": "^30.0.0",
     "@types/joi": "^17.2.2",
     "@types/morgan": "^1.9.10",
