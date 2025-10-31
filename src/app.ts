@@ -2,7 +2,7 @@
 import express, { Express } from "express";
 import helmet from "helmet";
 import cors from "cors";
-import dotenv from "dotenv";
+import dotenv, { config } from "dotenv";
 
 // Load environment variables BEFORE you internal imports!
 dotenv.config();
@@ -12,7 +12,8 @@ import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
 import { getHelmetConfig } from "../config/helmetConfig";
 import { getCorsConfig } from "../config/corsConfig";
-
+import setupSwagger from "../config/swagger";
+import { setup } from "swagger-ui-express";
 
 
 
@@ -61,5 +62,7 @@ app.get("/api/v1/health", (req, res) => {
 
 app.use("/api/v1/employees", employeeRoutes);
 app.use("/api/v1/branches", branchRoutes);
+
+setupSwagger(app);
 
 export default app;
