@@ -1,5 +1,6 @@
 // import the express application and type definition
 import express, { Express } from "express";
+import helmet from "helmet";
 import dotenv from "dotenv";
 
 // Load environment variables BEFORE you internal imports!
@@ -8,6 +9,9 @@ dotenv.config();
 import morgan from "morgan";
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
+import { getHelmetConfig } from "../config/helmetConfig";
+
+
 
 
 // initialize the express application
@@ -23,6 +27,8 @@ interface HealthCheckResponse {
 }
 // Middleware START
 app.use(morgan("combined"));
+app.use(helmet());
+app.use(helmet(getHelmetConfig()));
 
 // Ensures incoming body is correctly parsed to JSON, otherwise req.body would be undefined
 app.use(express.json());
