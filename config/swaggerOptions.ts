@@ -35,8 +35,7 @@ const swaggerOptions: Options = {
     },
     apis: [
         "./src/api/v1/routes/*.ts",
-        "./src/api/v1/validations/*.ts",
-        "./src/api/v1/controllers/*.ts",
+        "./src/api/v1/validation/*.ts",
     ],
 };
 

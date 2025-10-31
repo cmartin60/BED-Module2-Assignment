@@ -1,5 +1,95 @@
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Employee:
+ *       type: object
+ *       required:
+ *         - name
+ *         - position
+ *         - email
+ *         - branchId
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The unique identifier for an Employee
+ *           example: "E12345"
+ *         name:
+ *           type: string
+ *           description: Employee full name
+ *           example: "Jane Doe"
+ *         position:
+ *           type: string
+ *           description: Employee position or job title
+ *           example: "Software Engineer"
+ *         department:
+ *           type: string
+ *           description: Department name
+ *           example: "Engineering"
+ *         phone:
+ *           type: string
+ *           description: Contact phone number
+ *           example: "+1-555-555-5555"
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Employee email address
+ *           example: "jane.doe@example.com"
+ *         branchId:
+ *           type: string
+ *           description: Associated branch identifier
+ *           example: "branch_123"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Creation timestamp
+ *           example: "2025-01-01T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Last update timestamp
+ *           example: "2025-01-02T12:00:00Z"
+ */
 
 import Joi, { ObjectSchema }  from 'joi';
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Branch:
+ *       type: object
+ *       required:
+ *         - name
+ *         - address
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The unique identifier for a Branch
+ *           example: "branch_123"
+ *         name:
+ *           type: string
+ *           description: The name of the Branch
+ *           example: "Main Branch"
+ *         address:
+ *           type: string
+ *           description: The branch address
+ *           example: "123 Main St, City"
+ *         phone:
+ *           type: string
+ *           description: Contact phone number for the branch
+ *           example: "+1-555-555-5555"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Creation timestamp
+ *           example: "2025-01-01T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Last update timestamp
+ *           example: "2025-01-02T12:00:00Z"
+ */
 
 /**
  * Employee schema
