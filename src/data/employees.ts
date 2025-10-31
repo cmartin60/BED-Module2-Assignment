@@ -1,4 +1,4 @@
-import { Employee } from "src/api/v1/models/employeeModel";
+import { Employee } from "../api/v1/models/employeeModel";
 
 export const employees: Employee[] = [
   {

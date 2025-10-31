@@ -1,53 +1,68 @@
-import request, {Response as SupertestResponse} from "supertest";
-import express, {Express} from "express";
-import branchRoutes from "../src/api/v1/routes/branchRoutes";
+import request from "supertest";
+import app from "../src/app";
+import * as branchController from "../src/api/v1/controllers/branchController";
+import { HTTP_STATUS } from "../src/constants/httpConstants";
 
-const app: Express = express();
-app.use(express.json());
-app.use("/api/v1/branches", branchRoutes);
+jest.mock("../src/api/v1/controllers/branchController", () => ({
+  getAllBranches: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+  createBranch: jest.fn((req, res) => res.status(HTTP_STATUS.CREATED).send()),
+  updateBranch: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+  deleteBranch: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+  getBranchById: jest.fn((req, res) => res.status(HTTP_STATUS.OK).send()),
+}));
 
-describe("Branch Endpoints", () => {
-  let branchId: string;
+jest.mock("../src/api/v1/middleware/validate", () => ({
+  validateRequest: () => (req: any, res: any, next: any) => next(),
+}));
 
-  it("should create a new branch", async () => {
-    const response: SupertestResponse = await request(app)
-      .post("/api/v1/branches")
-      .send({
-        name: "Main Branch",
-        address: "123 Main St",
-        phone: "555-1234"
-      });
-
-    expect(response.status).toBe(201);
-    expect(response.body.data.id).toBeDefined();
-    branchId = response.body.data.id;
+describe("Branch Routes", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("should get all branches", async () => {
-        const response: SupertestResponse = await request(app).get("/api/v1/branches");
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body.data)).toBeTruthy();
+  describe("GET /api/v1/branches/", () => {
+    it("should call getAllBranches controller", async () => {
+      await request(app).get("/api/v1/branches/");
+      expect(branchController.getAllBranches).toHaveBeenCalled();
     });
+  });
 
-  it("should get a branch by ID", async () => {
-        const response: SupertestResponse = await request(app).get(`/api/v1/branches/${branchId}`);
-        expect(response.status).toBe(200);
-        expect(response.body.data.id).toBe(branchId);
+  describe("POST /api/v1/branches/", () => {
+    it("should call createBranch controller with valid data", async () => {
+      const mockBranch = {
+        name: "Test Branch",
+        address: "Test Address",
+        phone: "555-1234"
+      };
+      await request(app).post("/api/v1/branches/").send(mockBranch);
+      expect(branchController.createBranch).toHaveBeenCalled();
     });
-    
-  it("should update a branch", async () => {
-        const response: SupertestResponse = await request(app)
-            .put(`/api/v1/branches/${branchId}`)
-            .send({ address: "456 Elm St, New City, Country" });
+  });
 
-        expect(response.status).toBe(200);
-        expect(response.body.data.address).toBe("456 Elm St, New City, Country");
+  describe("PUT /api/v1/branches/:id", () => {
+    it("should call updateBranch controller with valid data", async () => {
+      const mockBranch = {
+        name: "Updated Branch",
+        address: "Updated Address",
+        phone: "555-5678"
+      };
+      await request(app).put("/api/v1/branches/testId").send(mockBranch);
+      expect(branchController.updateBranch).toHaveBeenCalled();
     });
+  });
 
-  it("should delete a branch", async () => {
-        const response: SupertestResponse = await request(app).delete(`/api/v1/branches/${branchId}`);
-        expect(response.status).toBe(200);
-        expect(response.body.message).toBe("Branch Deleted");
+  describe("DELETE /api/v1/branches/:id", () => {
+    it("should call deleteBranch controller with valid data", async () => {
+      await request(app).delete("/api/v1/branches/testId");
+      expect(branchController.deleteBranch).toHaveBeenCalled();
     });
+  });
+
+  describe("GET /api/v1/branches/:id", () => {
+    it("should call getBranchById controller", async () => {
+      await request(app).get("/api/v1/branches/testId");
+      expect(branchController.getBranchById).toHaveBeenCalled();
+    });
+  });
 });
 

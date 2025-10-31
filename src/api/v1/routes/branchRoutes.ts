@@ -1,45 +1,22 @@
 import express, { Router } from "express";
-import {
-  createBranch,
-  getAllBranches,
-  getBranchById,
-  updateBranch,
-  deleteBranch,
-} from "../controllers/branchController";
+import * as branchController from "../controllers/branchController";
+import { validateRequest } from "../middleware/validate";
+import { branchSchemas } from "../validation/schemas";
 
 const router: Router = express.Router();
 
-/**
- * @route POST /api/v1/branches
- * @description Create a new branch.
- */
-router.post("/", createBranch);
-
-/**
- * @route GET /api/v1/branches
- * @description Retrieve a list of all branches.
- */
-router.get("/", getAllBranches);
-
-/**
- * @route GET /api/v1/branches/:id
- * @description Retrieve a single branch by its unique ID.
- * @param {string} id - The unique identifier of the branch.
- */
-router.get("/:id", getBranchById);
-
-/**
- * @route PUT /api/v1/branches/:id
- * @description Update an existing branch by its unique ID.
- * @param {string} id - The unique identifier of the branch.
- */
-router.put("/:id", updateBranch);
-
-/**
- * @route DELETE /api/v1/branches/:id
- * @description Delete a branch by its unique ID.
- * @param {string} id - The unique identifier of the branch.
- */
-router.delete("/:id", deleteBranch);
+router.post(
+  "/",
+  validateRequest(branchSchemas.create),
+  branchController.createBranch
+);
+router.get("/", branchController.getAllBranches);
+router.get("/:id", branchController.getBranchById);
+router.put(
+  "/:id",
+  validateRequest(branchSchemas.update),
+  branchController.updateBranch
+);
+router.delete("/:id", branchController.deleteBranch);
 
 export default router;

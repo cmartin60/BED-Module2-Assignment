@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Employee } from "../models/employeeModel";
 import * as employeeService from "../services/employeeService";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { successResponse } from "../models/responseModel";
 
 /**
  * @description Create a new employee.
@@ -13,9 +15,12 @@ export const createEmployee = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const newEmployee: Employee = await employeeService.createEmployee(req.body);
-        res.status(201).json({ message: "Employee Created", data: newEmployee });
-    } catch (error) {
+    const { name, position, department, email, phone, branchId } = req.body;
+        const newEmployee: Employee = await employeeService.createEmployee({ name, position, department, email, phone, branchId });
+        res.status(HTTP_STATUS.CREATED).json(
+            successResponse(newEmployee, "Employee Created")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -32,8 +37,10 @@ export const getAllEmployees = async (
 ): Promise<void> => {
     try {
         const employees: Employee[] = await employeeService.getAllEmployees();
-        res.status(200).json({ message: "Employees Retrieved", data: employees });
-    } catch (error) {
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(employees, "Employees Retrieved")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -49,14 +56,18 @@ export const getEmployeeById = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const employee: Employee = await employeeService.getEmployeeById(req.params.id);
-        
+        const { id } = req.params;
+        const employee: Employee = await employeeService.getEmployeeById(id);
         if (!employee) {
-            res.status(404).json({ message: "Employee not found" });
+            res.status(HTTP_STATUS.NOT_FOUND).json(
+                successResponse(null, "Employee not found")
+            );
+            return;
         }
-
-        res.status(200).json({ message: "Employee Retrieved", data: employee });
-    } catch (error) {
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(employee, "Employee Retrieved")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -72,12 +83,13 @@ export const updateEmployee = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const updatedEmployee: Employee = await employeeService.updateEmployee(
-            req.params.id,
-            req.body
+        const { id } = req.params;
+        const { name, position, department, email, phone, branchId } = req.body;
+        const updatedEmployee: Employee = await employeeService.updateEmployee(id, { name, position, department, email, phone, branchId });
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(updatedEmployee, "Employee Updated")
         );
-        res.status(200).json({ message: "Employee Updated", data: updatedEmployee });
-    } catch (error) {
+    } catch (error: unknown) {
         next(error);
     }
 };
@@ -93,9 +105,58 @@ export const deleteEmployee = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        await employeeService.deleteEmployee(req.params.id);
-        res.status(200).json({ message: "Employee Deleted" });
-    } catch (error) {
+        const { id } = req.params;
+        await employeeService.deleteEmployee(id);
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(null, "Employee Deleted")
+        );
+    } catch (error: unknown) {
+        next(error);
+    }
+};
+
+/**
+ * Get all employees for a specific branch.
+ * @route GET /api/v1/logical/branch/:branchId/employees
+ */
+export const getEmployeesByBranch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { branchId } = req.params;
+        const employees: Employee[] = await employeeService.getAllEmployees();
+        const branchEmployees: Employee[] = employees.filter(
+            (emp) => emp.branchId.toString() === branchId
+        );
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(branchEmployees, "Employees Retrieved for Branch")
+        );
+    } catch (error: unknown) {
+        next(error);
+    }
+};
+
+/**
+ * Get all employees for a specific department.
+ * @route GET /api/v1/logical/department/:department/employees
+ */
+export const getEmployeesByDepartment = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { department } = req.params;
+        const employees: Employee[] = await employeeService.getAllEmployees();
+        const departmentEmployees: Employee[] = employees.filter(
+            (emp) => emp.department.toLowerCase() === department.toLowerCase()
+        );
+        res.status(HTTP_STATUS.OK).json(
+            successResponse(departmentEmployees, "Employees Retrieved for Department")
+        );
+    } catch (error: unknown) {
         next(error);
     }
 };

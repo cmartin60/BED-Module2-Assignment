@@ -3,7 +3,6 @@ import { HTTP_STATUS } from "../src/constants/httpConstants";
 import * as employeeController from "../src/api/v1/controllers/employeeController";
 import * as employeeService from "../src/api/v1/services/employeeService";
 import { Employee } from "../src/api/v1/models/employeeModel";
-import * as logicalController from "../src/api/v1/controllers/logicalController";
 
 jest.mock("../src/api/v1/services/employeeService");
 
@@ -50,6 +49,7 @@ describe("Employee Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.CREATED);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Created",
+        status: "success",
         data: mockEmployee,
       });
     });
@@ -85,6 +85,7 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved",
+        status: "success",
         data: mockEmployees,
       });
     });
@@ -127,6 +128,7 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Retrieved",
+        status: "success",
         data: mockEmployee,
       });
     });
@@ -144,7 +146,8 @@ describe("getAllEmployees", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.NOT_FOUND);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee not found",
-      });
+        status: "success",
+        data: null,
     });
   });
 
@@ -173,6 +176,7 @@ describe("updateEmployee", () => {
     expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
     expect(mockRes.json).toHaveBeenCalledWith({
       message: "Employee Updated",
+      status: "success",
       data: mockEmployee,
     });
   });
@@ -207,6 +211,8 @@ describe("updateEmployee", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employee Deleted",
+        status: "success",
+        data: null,
       });
     });
 
@@ -249,7 +255,7 @@ describe("Logical Controller", () => {
       mockReq.params = { branchId: "1" };
       (employeeService.getAllEmployees as jest.Mock).mockResolvedValue(mockEmployees);
 
-      await logicalController.getEmployeesByBranch(
+      await employeeController.getEmployeesByBranch(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -258,6 +264,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Branch",
+        status: "success",
         data: [mockEmployees[0]],
       });
     });
@@ -266,7 +273,7 @@ describe("Logical Controller", () => {
       mockReq.params = {};
       (employeeService.getAllEmployees as jest.Mock).mockResolvedValue([]);
 
-      await logicalController.getEmployeesByBranch(
+      await employeeController.getEmployeesByBranch(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -275,6 +282,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Branch",
+        status: "success",
         data: [],
       });
     });
@@ -290,7 +298,7 @@ describe("Logical Controller", () => {
       mockReq.params = { department: "HR" };
       (employeeService.getAllEmployees as jest.Mock).mockResolvedValue(mockEmployees);
 
-      await logicalController.getEmployeesByDepartment(
+      await employeeController.getEmployeesByDepartment(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -299,6 +307,7 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Department",
+        status: "success",
         data: [mockEmployees[0]],
       });
     });
@@ -307,7 +316,7 @@ describe("Logical Controller", () => {
       mockReq.params = {};
       (employeeService.getAllEmployees as jest.Mock).mockResolvedValue([]);
 
-      await logicalController.getEmployeesByDepartment(
+      await employeeController.getEmployeesByDepartment(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -316,7 +325,9 @@ describe("Logical Controller", () => {
       expect(mockRes.status).toHaveBeenCalledWith(HTTP_STATUS.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Employees Retrieved for Department",
+        status: "success",
         data: [],
+        });
       });
     });
   });
