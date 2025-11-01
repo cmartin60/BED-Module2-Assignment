@@ -42,10 +42,10 @@ const getFirebaseConfig = (): AppOptions => {
 };
 
 /**
- * Initializes Firebase Admin SDK if not already initialized
+ * Iniutializes Firebase Admin SDK if not already initialized
  *
- * This function implements the singleton pattern to ensure only
- * one Firebase app instance is created
+ * This fuynction implements the singleton pattern to ensure only
+ * onbe Firebase app instance is created
  *
  * @returns {App} Firebase Admin app instance
  */

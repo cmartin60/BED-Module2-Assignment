@@ -2,7 +2,7 @@
 import express, { Express } from "express";
 import helmet from "helmet";
 import cors from "cors";
-import dotenv, { config } from "dotenv";
+import dotenv from "dotenv";
 
 // Load environment variables BEFORE you internal imports!
 dotenv.config();
@@ -13,8 +13,6 @@ import branchRoutes from "./api/v1/routes/branchRoutes";
 import { getHelmetConfig } from "../config/helmetConfig";
 import { getCorsConfig } from "../config/corsConfig";
 import setupSwagger from "../config/swagger";
-import { setup } from "swagger-ui-express";
-
 
 
 // initialize the express application
