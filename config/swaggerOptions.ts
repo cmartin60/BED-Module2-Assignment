@@ -33,10 +33,7 @@ const swaggerOptions: Options = {
             },
         ],
     },
-    apis: [
-        "./src/api/v1/routes/*.ts",
-        "./src/api/v1/validation/*.ts",
-    ],
+    apis: ["./src/api/v1/routes/*.ts", "./src/api/v1/validation/*.ts"],
 };
 
 export const generateSwaggerSpec = (): object => {
