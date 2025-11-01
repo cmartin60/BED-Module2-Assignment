@@ -3,9 +3,9 @@ dist/
 docs/
 
 .vscode/
+.env
 module-3-assignment-321bf-firebase-adminsdk-fbsvc-fb4c424468.json
 
-.env
-
 logs/
+
 openapi.json
