@@ -5,7 +5,6 @@ import { branchSchemas } from "../validation/schemas";
 
 const router: Router = express.Router();
 
-
 /**
  * @openapi
  * /branches:

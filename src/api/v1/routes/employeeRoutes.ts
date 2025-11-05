@@ -5,7 +5,6 @@ import { employeeSchemas } from "../validation/schemas";
 
 const router: Router = express.Router();
 
-
 /**
  * @openapi
  * /employees:
@@ -64,6 +63,7 @@ router.post(
 	validateRequest(employeeSchemas.create),
 	employeeController.createEmployee
 );
+
 /**
  * @openapi
  * /employees:
@@ -81,6 +81,7 @@ router.post(
  *                 $ref: '#/components/schemas/Employee'
  */
 router.get("/", employeeController.getAllEmployees);
+
 /**
  * @openapi
  * /employees/{id}:
@@ -105,11 +106,83 @@ router.get("/", employeeController.getAllEmployees);
  *         description: Employee not found
  */
 router.get("/:id", employeeController.getEmployeeById);
+
+/**
+ * @openapi
+ * /employees/{id}:
+ *   put:
+ *     summary: Update an existing employee
+ *     tags: [Employees]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               position:
+ *                 type: string
+ *               department:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               branchId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Employee updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: Invalid input data
+ *       404:
+ *         description: Employee not found
+ *       409:
+ *         description: Conflict (e.g. email already exists)
+ */
 router.put(
 	"/:id",
 	validateRequest(employeeSchemas.update),
 	employeeController.updateEmployee
 );
+
+/**
+ * @openapi
+ * /employees/{id}:
+ *   delete:
+ *     summary: Delete an employee by ID
+ *     tags: [Employees]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee ID
+ *     responses:
+ *       204:
+ *         description: Employee deleted successfully
+ *       404:
+ *         description: Employee not found
+ */
 router.delete("/:id", employeeController.deleteEmployee);
 
 /**
@@ -136,6 +209,7 @@ router.delete("/:id", employeeController.deleteEmployee);
  *                 $ref: '#/components/schemas/Employee'
  */
 router.get("/branches/:branchId/employees", employeeController.getEmployeesByBranch);
+
 /**
  * @openapi
  * /employees/departments/{department}/employees:
