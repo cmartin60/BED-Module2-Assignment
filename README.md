@@ -1,15 +1,21 @@
 ## Project Overview
 
-This is a small Node.js + TypeScript API for managing branches and employees. It's for learning and demo purposes.
+This is a small Node.js + TypeScript API for managing branches and employees. It's built for learning and class demos.
 
-- Base path: `/api/v1`
-- Data: Firestore (firebase-admin)
-- Validation: Joi
-- Docs: Swagger (OpenAPI)
--Security: Helmet and CORS
+What it does
+- Lets you list, create, update and delete employees and branches.
+- Uses Firestore (via firebase-admin) as the datastore.
+- Has OpenAPI docs (Swagger) generated from JSDoc comments.
 
-## Quick setup
+Features
+- Node.js + TypeScript
+- Express
+- firebase-admin (Firestore)
+- Joi for validation
+- swagger-jsdoc + swagger-ui-express for docs
+- Helmet and CORS for basic security
 
+Quick setup
 1. Clone the repo and install:
 
 ```bash
@@ -26,7 +32,7 @@ npm install
 npm start
 ```
 
-## Minimal .env example
+## .env example
 
 ```env
 NODE_ENV=development
@@ -69,11 +75,11 @@ Open the Swagger UI after starting the server:
 http://localhost:3000/api-docs
 ```
 
-## Short security notes
+## Notes
 
 - Don't commit `.env` or service-account JSONs. If you do, rotate keys or just add it to your .gitignore file
 - Store secrets in GitHub Secrets or your CI provider. For `FIREBASE_PRIVATE_KEY` keep `\n` for newlines.
 
 ## Help
 
-If something breaks (tests or keys), check `test/jest.setup.ts` and `config/firebaseConfig.ts`.
+If something breaks, check `config/firebaseConfig.ts`.
